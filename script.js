@@ -36,7 +36,16 @@ class ChatBox {
         this.emojiBtn = document.getElementById('emojiBtn');
         this.attachBtn = document.getElementById('attachBtn');
         this.hraBtn = document.getElementById('hraBtn');
-        this.sdohBtn = document.getElementById('sdohBtn');
+        this.newTaskBtn = document.getElementById('newTaskBtn');
+        
+        // Task form elements
+        this.taskFormOverlay = document.getElementById('taskFormOverlay');
+        this.taskForm = document.querySelector('.task-form');
+        this.closeFormBtn = document.getElementById('closeFormBtn');
+        this.cancelTaskBtn = document.getElementById('cancelTaskBtn');
+        this.submitTaskBtn = document.getElementById('submitTaskBtn');
+        this.taskType = document.getElementById('taskType');
+        this.taskDate = document.getElementById('taskDate');
     }
 
     bindEvents() {
@@ -61,7 +70,35 @@ class ChatBox {
         this.emojiBtn?.addEventListener('click', () => this.handleEmojiClick());
         this.attachBtn?.addEventListener('click', () => this.handleAttachClick());
         this.hraBtn?.addEventListener('click', () => this.handleHRAClick());
-        this.sdohBtn?.addEventListener('click', () => this.handleSDOHClick());
+        this.newTaskBtn?.addEventListener('click', () => this.handleNewTaskClick());
+        
+        // Task form events
+        this.closeFormBtn?.addEventListener('click', () => this.closeTaskForm());
+        this.cancelTaskBtn?.addEventListener('click', () => this.closeTaskForm());
+        this.submitTaskBtn?.addEventListener('click', () => this.handleTaskSubmit());
+        this.taskFormOverlay?.addEventListener('click', (e) => {
+            if (e.target === this.taskFormOverlay) {
+                this.closeTaskForm();
+            }
+        });
+        
+        // Prevent form clicks from closing the modal
+        this.taskForm?.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+        
+        // Form input events
+        this.taskType?.addEventListener('change', () => this.validateTaskForm());
+        this.taskDate?.addEventListener('change', () => this.validateTaskForm());
+        
+        // Keyboard events for task form
+        this.taskFormOverlay?.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                this.closeTaskForm();
+            } else if (e.key === 'Enter' && !this.submitTaskBtn?.disabled) {
+                this.handleTaskSubmit();
+            }
+        });
 
         // Focus input when chat is clicked
         this.chatContainer?.addEventListener('click', () => {
@@ -232,6 +269,74 @@ class ChatBox {
         setTimeout(() => {
             this.hideTypingIndicator();
             this.addMessage('I\'ll assist you with Social Determinants of Health information. This includes factors like housing, education, income, and community resources that affect your health.', 'bot');
+        }, 1500);
+    }
+
+    handleNewTaskClick() {
+        // Show the task form modal
+        this.showTaskForm();
+    }
+
+    showTaskForm() {
+        if (this.taskFormOverlay) {
+            this.taskFormOverlay.classList.add('show');
+            // Reset form
+            this.resetTaskForm();
+            // Focus on first input
+            setTimeout(() => {
+                this.taskType?.focus();
+            }, 100);
+        }
+    }
+
+    closeTaskForm() {
+        if (this.taskFormOverlay) {
+            this.taskFormOverlay.classList.remove('show');
+            this.resetTaskForm();
+        }
+    }
+
+    resetTaskForm() {
+        if (this.taskType) this.taskType.value = '';
+        if (this.taskDate) this.taskDate.value = '';
+        this.validateTaskForm();
+    }
+
+    validateTaskForm() {
+        if (!this.submitTaskBtn || !this.taskType || !this.taskDate) return;
+        
+        const isValid = this.taskType.value && this.taskDate.value;
+        this.submitTaskBtn.disabled = !isValid;
+    }
+
+    handleTaskSubmit() {
+        if (!this.taskType || !this.taskDate) return;
+        
+        const type = this.taskType.value;
+        const date = this.taskDate.value;
+        
+        if (!type || !date) {
+            return;
+        }
+        
+        // Format the date for display
+        const formattedDate = new Date(date).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        // Add user message with task details
+        this.addMessage(`📋 New ${type} task created for ${formattedDate}`, 'user');
+        
+        // Close the form
+        this.closeTaskForm();
+        
+        // Show typing indicator and simulate bot response
+        this.showTypingIndicator();
+        setTimeout(() => {
+            this.hideTypingIndicator();
+            this.addMessage(`Perfect! I've created a new ${type} task scheduled for ${formattedDate}. I'll make sure to remind you as the date approaches.`, 'bot');
         }, 1500);
     }
 

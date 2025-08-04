@@ -51,26 +51,51 @@
         </div>
 
         <div class="chat-input-container">
+            <div class="input-actions">
+                <button class="quick-action-btn" id="hraBtn">
+                    HRA
+                </button>
+                <button class="quick-action-btn" id="newTaskBtn">
+                    New Task
+                </button>
+            </div>
             <div class="chat-input-wrapper">
                 <input type="text" id="messageInput" placeholder="Type your message..." maxlength="500">
                 <button id="sendBtn" class="send-btn">
                     <i class="fas fa-paper-plane"></i>
                 </button>
             </div>
-            <div class="input-actions">
-                <button class="quick-action-btn" id="hraBtn">
-                    HRA
-                </button>
-                <button class="quick-action-btn" id="sdohBtn">
-                    SDOH
-                </button>
-                <button class="action-btn" id="emojiBtn">
-                    <i class="fas fa-smile"></i>
-                </button>
-                <button class="action-btn" id="attachBtn">
-                    <i class="fas fa-paperclip"></i>
-                </button>
+        </div>
+
+        <!-- New Task Form Modal -->
+        <div class="task-form-overlay" id="taskFormOverlay">
+            <div class="task-form">
+                <div class="task-form-header">
+                    <h3>Create New Task</h3>
+                    <button class="close-form-btn" id="closeFormBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="task-form-content">
+                    <div class="form-group">
+                        <label for="taskType">Task Type:</label>
+                        <select id="taskType" class="form-select">
+                            <option value="">Select type...</option>
+                            <option value="follow-up">Follow-up</option>
+                            <option value="appointment">Appointment</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskDate">Date:</label>
+                        <input type="date" id="taskDate" class="form-input">
+                    </div>
+                    <div class="form-actions">
+                        <button class="cancel-btn" id="cancelTaskBtn">Cancel</button>
+                        <button class="submit-btn" id="submitTaskBtn">Submit</button>
+                    </div>
+                </div>
             </div>
+        </div>
         </div>
     </div>
 
