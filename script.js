@@ -256,7 +256,7 @@ class ChatBox {
         this.showTypingIndicator();
         setTimeout(() => {
             this.hideTypingIndicator();
-            this.addMessage('I\'ll help you with your Health Risk Assessment. Let me gather some information about your current health status and lifestyle factors.', 'bot');
+            this.addMessage('HRA Status for Patricia Johnson is completed on 7/31/2025 and next due date is 12/31/2025', 'bot');
         }, 1500);
     }
 
@@ -274,7 +274,7 @@ class ChatBox {
 
     handleNewTaskClick() {
         // Show the task form modal
-        this.showTaskForm();
+        this.showTaskForm();    
     }
 
     showTaskForm() {
@@ -336,7 +336,7 @@ class ChatBox {
         this.showTypingIndicator();
         setTimeout(() => {
             this.hideTypingIndicator();
-            this.addMessage(`Perfect! I've created a new ${type} task scheduled for ${formattedDate}. I'll make sure to remind you as the date approaches.`, 'bot');
+            this.addMessage(`Perfect! I've created a new ${type} task for Patricia Johnson scheduled for ${formattedDate}. I'll make sure to remind you as the date approaches.`, 'bot');
         }, 1500);
     }
 
